@@ -68,7 +68,7 @@ class Fetch_WPCom {
 				set_post_thumbnail( $post_id, $attachment_id );
 			}
 		}
-		WP_CLI::success( "Fetched {$slug} as post id {$post_id}." );
+		WP_CLI::success( "Fetched {$slug} as post id {$post_id}" );
 	}
 
 	private static function media_sideload_image( $file, $post_id, $desc = null, $return = 'html' ) {
