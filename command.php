@@ -22,6 +22,10 @@ class Fetch_WPCom {
 			WP_CLI::error( "Post already exists as id {$post_id}" );
 		}
 
+		if ( ! defined( 'WP_IMPORTING' ) ) {
+			define( 'WP_IMPORTING', true );
+		}
+
 		$url = sprintf( 'https://public-api.wordpress.com/rest/v1.1/sites/%s/posts/slug:%s', $site, $slug );
 		$response = WP_CLI\Utils\http_request( 'GET', $url );
 		if ( 200 !== $response->status_code ) {
@@ -40,7 +44,6 @@ class Fetch_WPCom {
 		if ( is_wp_error( $post_id ) ) {
 			WP_CLI::error( $post_id );
 		}
-		$wpdb->update( $wpdb->posts, array( 'post_name' => $slug ), array( 'ID' => $post_id ) );
 		if ( ! empty( $body->featured_image ) ) {
 			$attachment_id = self::media_sideload_image( $body->featured_image, $post_id );
 			if ( $attachment_id && ! is_wp_error( $attachment_id ) ) {
