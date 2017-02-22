@@ -48,6 +48,9 @@ class Fetch_WPCom {
 			'post_excerpt' => $body->excerpt,
 			'post_date'    => date( 'Y-m-d H:i:s', strtotime( $body->date ) ),
 		);
+		if ( $user = get_user_by( 'login', $body->author->login ) ) {
+			$post['post_author'] = $user->ID;
+		}
 		$post_id = wp_insert_post( $post, true );
 		if ( is_wp_error( $post_id ) ) {
 			WP_CLI::error( $post_id );
