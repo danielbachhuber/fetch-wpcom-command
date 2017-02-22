@@ -1,8 +1,8 @@
 {
-    "name": "danielbachhuber/fetch-wpcom",
+    "name": "danielbachhuber/fetch-wpcom-command",
     "description": "",
     "type": "wp-cli-package",
-    "homepage": "https://github.com/danielbachhuber/fetch-wpcom",
+    "homepage": "https://github.com/danielbachhuber/fetch-wpcom-command",
     "license": "MIT",
     "authors": [],
     "minimum-stability": "dev",
