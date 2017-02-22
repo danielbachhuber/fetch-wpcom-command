@@ -15,7 +15,7 @@ class Fetch_WPCom {
 	 * <slug>
 	 * : Post slug to download.
 	 */
-	public function __invoke() {
+	public function __invoke( $args ) {
 		global $wpdb;
 		list( $site, $slug ) = $args;
 		if ( $post_id = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_name=%s AND post_type='post'", $slug ) ) ) {
