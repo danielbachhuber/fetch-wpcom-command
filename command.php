@@ -52,6 +52,16 @@ class Fetch_WPCom {
 		if ( is_wp_error( $post_id ) ) {
 			WP_CLI::error( $post_id );
 		}
+		if ( ! empty( $body->terms ) ) {
+			foreach( $body->terms as $taxonomy => $terms ) {
+				$terms = (array) $terms;
+				if ( empty( $terms ) ) {
+					continue;
+				}
+				$terms = array_values( wp_list_pluck( $terms, 'name' ) );
+				wp_set_post_terms( $post_id, $terms, $taxonomy );
+			}
+		}
 		if ( ! empty( $body->featured_image ) ) {
 			$attachment_id = self::media_sideload_image( $body->featured_image, $post_id );
 			if ( $attachment_id && ! is_wp_error( $attachment_id ) ) {
