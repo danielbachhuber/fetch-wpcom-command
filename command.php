@@ -45,6 +45,7 @@ class Fetch_WPCom {
 			'post_title'   => $body->title,
 			'post_name'    => $body->slug,
 			'post_content' => $body->content,
+			'post_excerpt' => $body->excerpt,
 			'post_date'    => date( 'Y-m-d H:i:s', strtotime( $body->date ) ),
 		);
 		$post_id = wp_insert_post( $post, true );
