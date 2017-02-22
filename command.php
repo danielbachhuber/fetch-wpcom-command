@@ -59,6 +59,16 @@ class Fetch_WPCom {
 					continue;
 				}
 				$terms = array_values( wp_list_pluck( $terms, 'name' ) );
+				if ( is_taxonomy_hierarchical( $taxonomy ) ) {
+					$term_ids = array();
+					foreach( $terms as $term ) {
+						$obj = get_term_by( 'name', $term, $taxonomy );
+						if ( $obj ) {
+							$term_ids[] = (int) $obj->term_id;
+						}
+					}
+					$terms = $term_ids;
+				}
 				wp_set_post_terms( $post_id, $terms, $taxonomy );
 			}
 		}
