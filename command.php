@@ -14,12 +14,19 @@ class Fetch_WPCom {
 	 *
 	 * <slug>
 	 * : Post slug to download.
+	 *
+	 * [--force]
+	 * : Delete current post if it exists.
 	 */
-	public function __invoke( $args ) {
+	public function __invoke( $args, $assoc_args ) {
 		global $wpdb;
 		list( $site, $slug ) = $args;
 		if ( $post_id = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_name=%s AND post_type='post'", $slug ) ) ) {
-			WP_CLI::error( "Post already exists as id {$post_id}" );
+			if ( ! WP_CLI\Utils\get_flag_value( $assoc_args, 'force' ) ) {
+				WP_CLI::error( "Post already exists as id {$post_id}" );
+			}
+			wp_delete_post( $post_id, true );
+			WP_CLI::log( "Deleted existing post {$post_id}" );
 		}
 
 		if ( ! defined( 'WP_IMPORTING' ) ) {
