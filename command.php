@@ -9,18 +9,22 @@ class Fetch_WPCom {
 	/**
 	 * Fetch a post from WordPress.com and insert into the database.
 	 *
-	 * <site>
-	 * : Site URL to download from.
-	 *
-	 * <slug>
-	 * : Post slug to download.
+	 * <url>
+	 * : Post permalink to download.
 	 *
 	 * [--force]
 	 * : Delete current post if it exists.
 	 */
 	public function __invoke( $args, $assoc_args ) {
 		global $wpdb;
-		list( $site, $slug ) = $args;
+		list( $url ) = $args;
+
+		if ( ! preg_match( '#^https?://([^/]+)/[\d]{4}/[\d]{2}/[\d]{2}/([^/]+)#', $url, $matches ) ) {
+			WP_CLI::error( "Couldn't parse host and slug from URL." );
+		}
+		$site = $matches[1];
+		$slug = $matches[2];
+
 		if ( $post_id = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_name=%s AND post_type='post'", $slug ) ) ) {
 			if ( ! WP_CLI\Utils\get_flag_value( $assoc_args, 'force' ) ) {
 				WP_CLI::error( "Post already exists as id {$post_id}" );
