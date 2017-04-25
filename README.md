@@ -10,14 +10,22 @@ Quick links: [Using](#using) | [Installing](#installing) | [Contributing](#contr
 ## Using
 
 ~~~
-wp fetch-wpcom <site> <slug>
+wp fetch-wpcom <url> [--force]
 ~~~
 
-	<site>
-		Site URL to download from.
+**OPTIONS**
 
-	<slug>
-		Post slug to download.
+	<url>
+		Post permalink to download.
+
+	[--force]
+		Delete current post if it exists.
+
+**EXAMPLES**
+
+    # Steal the last 100 BGR posts
+    $ http https://public-api.wordpress.com/rest/v1.1/sites/bgr.com/posts number==100 | jq '.posts[].URL' > bgr.txt
+    $ cat bgr.txt| xargs -I % wp fetch-wpcom %
 
 ## Installing
 
