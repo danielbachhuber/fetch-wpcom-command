@@ -9,11 +9,19 @@ class Fetch_WPCom {
 	/**
 	 * Fetch a post from WordPress.com and insert into the database.
 	 *
+	 * ## OPTIONS
+	 *
 	 * <url>
 	 * : Post permalink to download.
 	 *
 	 * [--force]
 	 * : Delete current post if it exists.
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     # Steal the last 100 BGR posts
+	 *     $ http https://public-api.wordpress.com/rest/v1.1/sites/bgr.com/posts number==100 | jq '.posts[].URL' > bgr.txt
+	 *     $ cat bgr.txt| xargs -I % wp fetch-wpcom %
 	 */
 	public function __invoke( $args, $assoc_args ) {
 		global $wpdb;
